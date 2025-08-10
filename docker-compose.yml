@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORT=3000
+    env_file:
+      - .env
+    volumes:
+      - ./api:/app/api
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/generate"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Serviço opcional para desenvolvimento com hot reload
+  api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORT=3000
+    env_file:
+      - .env
+    volumes:
+      - ./api:/app/api
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - /app/node_modules
+    restart: unless-stopped
+    profiles:
+      - dev
+
+networks:
+  default:
+    name: ai-api-network
