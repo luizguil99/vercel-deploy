@@ -1,0 +1,21 @@
+{
+  "name": "notebookos-ai-api",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "api/generate.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.8",
+    "ai": "^5.0.8",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "ts-pattern": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
